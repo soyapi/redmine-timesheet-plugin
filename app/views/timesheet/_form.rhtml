@@ -21,7 +21,11 @@
 
 <p>
   <label for="timesheet_sort"><%= l(:timesheet_group_by) %>:</label><br />
-  <%= select_tag("timesheet[sort]", options_for_select(Timesheet::ValidSortOptions.invert, @timesheet.sort)) %>
+  <%#= select_tag("timesheet[sort]", options_for_select (Timesheet::ValidSortOptions.invert, @timesheet.sort)) %>
+  <%= select_tag("timesheet[sort]", 
+  '<option value="issue">Issue</option>
+<option value="user" selected="selected">User</option>
+<option value="project">Project</option>') %>
 
 </p>
 
@@ -52,3 +56,16 @@
 <%= button_to(l(:button_reset), {:controller => 'timesheet', :action => 'reset'}, :method => 'delete') %>
 </fieldset>
 </div>
+
+<center>Submit Timesheets</center>
+
+<%= button_to"submit to manager"%> <br />
+<select>
+<option>---please select---</option>
+<option>Manager</option>
+</select>
+<br />
+
+<center>For Managers</center> <br />
+<%= button_to"Approve", :class => "button" %> <br />
+<%= button_to"Submit to HR"%> <br />

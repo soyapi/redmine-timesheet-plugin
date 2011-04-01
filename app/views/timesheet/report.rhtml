@@ -7,6 +7,36 @@
 
 <%= render :partial => 'form' %>
 
+<% # TODO: Move the forms below into partials %>
+<% if @total.values.sum >= 37.5 %>
+<div class="box">
+  <% if User.current_user.manager? %>
+    <% form_tag 'submit_to_hr', {:id => 'hr_timesheet'} do -%>
+      <%= hidden_field_tag 'hr_start_date', '' %>
+
+      <% # Timesheet#to_param is a Hash %>
+      <%= hidden_field_tag 'timesheet_url',
+                           '/timesheet/report/' + @timesheet.to_param.to_param %>
+
+      <%= button_to_function 'Approve and Submit to HR', 'approveTimesheet();',
+                             :class => 'button-small' -%>
+    <% end # form%>
+  <% else %>
+    <% form_tag 'submit_to_mgr', {:id => 'mgr_timesheet'} do -%>
+      <%= hidden_field_tag 'mgr_start_date', '' %>
+
+      <% # Timesheet#to_param is a Hash %>
+      <%= hidden_field_tag 'timesheet_url',
+                           '/timesheet/report/' + @timesheet.to_param.to_param %>
+
+      <%= button_to_function 'Submit to Manager', 'submitTimesheet();',
+                           :class => 'button-small' -%>
+
+    <% end # form%>
+  <% end #if manager?%>
+</div>
+<% end %>
+
 <%= call_hook(:plugin_timesheet_views_timesheets_report_before_time_entries, { :timesheet => @timesheet }) %>
 
 <% form_tag({}, { :id => 'time_entries'}) do -%>
@@ -47,3 +77,15 @@ end # form_tag
 <%# TODO: Typo on hook %>
 <%= call_hook(:plugin_timesheet_view_timesheets_report_bottom, { :timesheet => @timesheet }) %>
 <%= call_hook(:plugin_timesheet_views_timesheets_report_bottom, { :timesheet => @timesheet }) %>
+
+<script type="text/javascript" >
+  function submitTimesheet() {
+    $('mgr_start_date').value = $('timesheet_date_from').value;
+    $('mgr_timesheet').submit();
+  }
+
+  function approveTimesheet() {
+    $('hr_start_date').value = $('timesheet_date_from').value;
+    $('hr_timesheet').submit();
+  }
+</script>

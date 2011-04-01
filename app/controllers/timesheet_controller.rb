@@ -98,6 +98,25 @@ class TimesheetController < ApplicationController
     redirect_to :action => 'index'
   end
 
+  def submit_to_mgr
+    Mailer.deliver_timesheet_submitted(User.current,
+                                       params[:week_start_date],
+                                       params[:timesheet_url])
+    flash[:notice] = "Timesheet successfully submitted!"
+    redirect_to :controller => 'timesheet', :action => 'index'
+  end
+
+  def submit_to_hr
+    user = User.current
+    manager = user.manager || '<Unknown Manager>'
+    Mailer.deliver_timesheet_approved(manager,
+                                      User.current,
+                                      params[:week_start_date],
+                                      params[:timesheet_url])
+    flash[:notice] = "Timesheet successfully approved!"
+    redirect_to :controller => 'timesheet', :action => 'index'
+  end
+  
   private
   def get_list_size
     @list_size = Setting.plugin_timesheet_plugin['list_size'].to_i
@@ -156,4 +175,5 @@ class TimesheetController < ApplicationController
       session[SessionKey]['date_to'] = timesheet.date_to
     end
   end
+
 end

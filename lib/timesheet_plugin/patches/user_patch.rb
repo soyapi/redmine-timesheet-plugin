@@ -11,6 +11,13 @@ module TimesheetPlugin
       end
 
       module ClassMethods
+
+        def dept_managers
+          dept_managers = {'Operations'             => 'alex',
+                           'Software Development'   => 'soyapi',
+                           'Support and Deployment' => 'bond'
+          }
+        end
       end
 
       module InstanceMethods
@@ -53,6 +60,22 @@ module TimesheetPlugin
             roles << @role_anonymous
           end
           roles
+        end
+
+        # Returns the user's manager
+        def manager
+          manager = nil
+          manager_login = User.dept_managers[self.groups.first.lastname]
+
+          if manager_login
+            manager = User.find_by_login(manager_login)
+          end
+
+          manager
+        end
+
+        def manager?
+          User.dept_managers.values.include?(self.login)
         end
         
       end

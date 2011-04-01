@@ -10,7 +10,7 @@
 <% # TODO: Move the forms below into partials %>
 <% if @total.values.sum >= 37.5 %>
 <div class="box">
-  <% if User.current_user.manager? %>
+  <% if User.current.manager? %>
     <% form_tag 'submit_to_hr', {:id => 'hr_timesheet'} do -%>
       <%= hidden_field_tag 'hr_start_date', '' %>
 

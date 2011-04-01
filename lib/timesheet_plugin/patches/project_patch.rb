@@ -44,6 +44,10 @@ module TimesheetPlugin
       end
 
       module InstanceMethods
+
+        def customer
+          Customer.find(self.customer_id)
+        end
       end
     end
   end

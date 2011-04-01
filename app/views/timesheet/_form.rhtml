@@ -29,6 +29,7 @@
 
 </p>
 
+<% if User.current.manager? %>
 <p>
   <label for="timesheet_projects_" class="select_all"><%= l(:timesheet_project_label)%>:</label><br />
   <%= select_tag 'timesheet[projects][]', project_options(@timesheet), { :multiple => true, :size => @list_size} %>
@@ -44,7 +45,7 @@
   <label for="timesheet_users_" class="select_all"><%= l(:timesheet_users_label)%>:</label><br />
   <%= select_tag 'timesheet[users][]', user_options(@timesheet), { :multiple => true, :size => @list_size} %>
 </p>
-
+<% end %>
 <%# TODO: Typo on hook %>
 <%= call_hook(:plugin_timesheet_view_timesheet_form, { :timesheet => @timesheet, :params => params, :list_size => @list_size }) %>
 <%= call_hook(:plugin_timesheet_views_timesheet_form, { :timesheet => @timesheet, :params => params, :list_size => @list_size }) %>
@@ -57,18 +58,4 @@
 </fieldset>
 </div>
 
-<% if false %>
-<center>Submit Timesheets</center>
 
-<%= button_to"submit to manager"%> <br />
-<select>
-<option>---please select---</option>
-<option>Manager</option>
-</select>
-<br />
-
-<center>For Managers</center> <br />
-<%= button_to"Approve", :class => "button" %> <br />
-<%= button_to"Submit to HR"%> <br />
-
-<% end %>

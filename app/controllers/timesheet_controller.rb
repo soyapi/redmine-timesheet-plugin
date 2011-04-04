@@ -99,20 +99,35 @@ class TimesheetController < ApplicationController
   end
 
   def submit_to_mgr
+    load_filters_from_session   # create @timesheet
+    url = url_for(:controller => 'timesheet',
+            :action => 'report',
+            :timesheet => @timesheet.to_param)
+
     Mailer.deliver_timesheet_submitted(User.current,
-                                       params[:week_start_date],
-                                       params[:timesheet_url])
+                                       @timesheet.date_from,
+                                       url)
     flash[:notice] = "Timesheet successfully submitted!"
     redirect_to :controller => 'timesheet', :action => 'index'
   end
 
   def submit_to_hr
-    user = User.current
-    manager = user.manager || '<Unknown Manager>'
+    load_filters_from_session   # create @timesheet
+    
+    url = url_for(:controller => 'timesheet',
+            :action => 'report',
+            :timesheet => @timesheet.to_param)
+
+    @timesheet.fetch_time_entries
+    user_id = @timesheet.time_entries.first.last[:logs].first.attributes[
+                         'user_id'] rescue nil
+
+    manager = User.current
+    user = User.find(user_id) rescue nil
     Mailer.deliver_timesheet_approved(manager,
-                                      User.current,
-                                      params[:week_start_date],
-                                      params[:timesheet_url])
+                                      user,
+                                      @timesheet.date_from,
+                                      url)
     flash[:notice] = "Timesheet successfully approved!"
     redirect_to :controller => 'timesheet', :action => 'index'
   end

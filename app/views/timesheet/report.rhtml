@@ -7,32 +7,19 @@
 
 <%= render :partial => 'form' %>
 
-<% # TODO: Move the forms below into partials %>
 <% if @total.values.sum >= 37.5 %>
 <div class="box">
   <% if User.current.manager? %>
-    <% form_tag 'submit_to_hr', {:id => 'hr_timesheet'} do -%>
-      <%= hidden_field_tag 'hr_start_date', '' %>
-
-      <% # Timesheet#to_param is a Hash %>
-      <%= hidden_field_tag 'timesheet_url',
-                           '/timesheet/report/' + @timesheet.to_param.to_param %>
-
-      <%= button_to_function 'Approve and Submit to HR', 'approveTimesheet();',
-                             :class => 'button-small' -%>
-    <% end # form%>
+    <%# if timesheet is for 1 staff %>
+    <% if @timesheet.sort == :user and @timesheet.time_entries.keys.length == 1 %>
+      <%= button_to('Approve and Submit to HR',
+                  :controller => 'timesheet',
+                  :action => 'submit_to_hr') %>
+    <% end # if 1 staff %>
   <% else %>
-    <% form_tag 'submit_to_mgr', {:id => 'mgr_timesheet'} do -%>
-      <%= hidden_field_tag 'mgr_start_date', '' %>
-
-      <% # Timesheet#to_param is a Hash %>
-      <%= hidden_field_tag 'timesheet_url',
-                           '/timesheet/report/' + @timesheet.to_param.to_param %>
-
-      <%= button_to_function 'Submit to Manager', 'submitTimesheet();',
-                           :class => 'button-small' -%>
-
-    <% end # form%>
+    <%= button_to('Submit to Manager',
+                  :controller => 'timesheet',
+                  :action => 'submit_to_mgr') %>
   <% end #if manager?%>
 </div>
 <% end %>

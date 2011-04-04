@@ -13,10 +13,15 @@
   <span onclick="$('timesheet_period_type_2').checked = true;">
     <label for="timesheet_date_from"><%= l(:timesheet_date_from_label)%>:</label><br />
     <%= f.text_field "date_from", :size => 10 %><%= calendar_for('timesheet_date_from') %><br />
-
+<% unless User.current.manager? %>
     <label for="timesheet_date_to"><%= l(:timesheet_date_to_label)%>:</label><br />
+    <%= f.text_field "date_to", :size => 10,:readonly=>true %><% #calendar_for('timesheet_date_to') %><br /><br />
+  </span>
+  <% else %>
+   <label for="timesheet_date_to"><%= l(:timesheet_date_to_label)%>:</label><br />
     <%= f.text_field "date_to", :size => 10 %><%= calendar_for('timesheet_date_to') %><br /><br />
   </span>
+  <% end %>
 </p>
 <% if User.current.manager? %>
 <p>

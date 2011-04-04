@@ -22,6 +22,10 @@ class Timesheet
     :free_period => 0,
     :default => 1
   }
+
+  @@config = YAML.load_file(
+    'vendor/plugins/timesheet_plugin/config/timesheet.yml'
+  ) rescue {}
   
   def initialize(options = { })
     self.projects = [ ]
@@ -149,6 +153,10 @@ class Timesheet
     User.active.select {|user|
       user.allowed_to?(:log_time, nil, :global => true)
     }
+  end
+
+  def self.config
+    @@config
   end
   
   protected

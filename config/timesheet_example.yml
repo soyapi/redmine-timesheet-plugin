@@ -1,0 +1,9 @@
+## YAML Template.
+---
+development:
+  hr_email: [my@example.com, test@domain.org]
+  min_hours: 5
+
+production:
+  hr_email: [admin@domain.com]
+  min_hours: 37.5

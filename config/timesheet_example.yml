@@ -1,9 +1,21 @@
-## YAML Template.
+# Rename this file to timesheet.yml and customize
+#
+# hr_email: recepient email address for approved timesheet
+# min_hours: Only timesheets with more logged hours than this will be able to
+#            submit timesheets for approval
+# managers: Mapping of Managers' usernames to their corresponging Departments
+#
 ---
 development:
   hr_email: [my@example.com, test@domain.org]
   min_hours: 5
+  managers:
+    Department:               manager_username
+    "Another Department":     manager2
 
 production:
   hr_email: [admin@domain.com]
   min_hours: 37.5
+  managers:
+    Department:               manager_username
+    "Another Department":     manager2

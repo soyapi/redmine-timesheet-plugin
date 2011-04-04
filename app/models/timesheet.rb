@@ -156,7 +156,7 @@ class Timesheet
   end
 
   def self.config
-    @@config
+    @@config[RAILS_ENV]
   end
   
   protected

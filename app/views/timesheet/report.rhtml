@@ -7,10 +7,10 @@
 
 <%= render :partial => 'form' %>
 
-<% if @total.values.sum >= 37.5 %>
+<% if @total.values.sum >= Timesheet.config['min_hours'] %>
 <div class="box">
   <% if User.current.manager? %>
-    <%# if timesheet is for 1 staff %>
+    <%# if timesheet is for 1 staff member %>
     <% if @timesheet.sort == :user and @timesheet.time_entries.keys.length == 1 %>
       <%= button_to('Approve and Submit to HR',
                   :controller => 'timesheet',
@@ -64,15 +64,3 @@ end # form_tag
 <%# TODO: Typo on hook %>
 <%= call_hook(:plugin_timesheet_view_timesheets_report_bottom, { :timesheet => @timesheet }) %>
 <%= call_hook(:plugin_timesheet_views_timesheets_report_bottom, { :timesheet => @timesheet }) %>
-
-<script type="text/javascript" >
-  function submitTimesheet() {
-    $('mgr_start_date').value = $('timesheet_date_from').value;
-    $('mgr_timesheet').submit();
-  }
-
-  function approveTimesheet() {
-    $('hr_start_date').value = $('timesheet_date_from').value;
-    $('hr_timesheet').submit();
-  }
-</script>

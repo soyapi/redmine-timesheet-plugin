@@ -13,10 +13,7 @@ module TimesheetPlugin
       module ClassMethods
 
         def dept_managers
-          dept_managers = {'Operations'             => 'alex',
-                           'Software Development'   => 'soyapi',
-                           'Support and Deployment' => 'bond'
-          }
+          Timesheet.config['managers']
         end
       end
 

@@ -100,9 +100,9 @@ class TimesheetController < ApplicationController
 
   def submit_to_mgr
     load_filters_from_session   # create @timesheet
-    url = url_for(:controller => 'timesheet',
-            :action => 'report',
-            :timesheet => @timesheet.to_param)
+
+    @timesheet.users = [User.current.id]
+    url = get_user_timesheet_url(@timesheet)
 
     Mailer.deliver_timesheet_submitted(User.current,
                                        @timesheet.date_from,
@@ -114,21 +114,21 @@ class TimesheetController < ApplicationController
   def submit_to_hr
     load_filters_from_session   # create @timesheet
     
-    url = url_for(:controller => 'timesheet',
-            :action => 'report',
-            :timesheet => @timesheet.to_param)
+    url = get_user_timesheet_url(@timesheet)
+    
+    user_id = @timesheet.users.first rescue nil
 
-    @timesheet.fetch_time_entries
-    user_id = @timesheet.time_entries.first.last[:logs].first.attributes[
-                         'user_id'] rescue nil
-
-    manager = User.current
-    user = User.find(user_id) rescue nil
-    Mailer.deliver_timesheet_approved(manager,
-                                      user,
-                                      @timesheet.date_from,
-                                      url)
-    flash[:notice] = "Timesheet successfully approved!"
+    if user_id
+      manager = User.current
+      user = User.find(user_id) rescue nil
+      Mailer.deliver_timesheet_approved(manager,
+                                        user,
+                                        @timesheet.date_from,
+                                        url)
+      flash[:notice] = "Timesheet successfully approved!"
+    else
+      flash[:error] = "Too many users selected. Only ONE user should be selected"
+    end
     redirect_to :controller => 'timesheet', :action => 'index'
   end
   
@@ -189,6 +189,15 @@ class TimesheetController < ApplicationController
       session[SessionKey]['date_from'] = timesheet.date_from
       session[SessionKey]['date_to'] = timesheet.date_to
     end
+  end
+
+  def get_user_timesheet_url(timesheet, user_id=nil)
+    # sort by user to allow confirming that the timesheet is for 1 staff member
+    timesheet.sort = :user
+    timesheet.fetch_time_entries
+    url_for(:controller => 'timesheet',
+            :action     => 'report',
+            :timesheet  => timesheet.to_param)
   end
 
 end

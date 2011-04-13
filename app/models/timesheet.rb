@@ -24,7 +24,7 @@ class Timesheet
   }
 
   @@config = YAML.load_file(
-    'vendor/plugins/timesheet_plugin/config/timesheet.yml'
+    RAILS_ROOT + '/vendor/plugins/timesheet_plugin/config/timesheet.yml'
   ) rescue {}
   
   def initialize(options = { })

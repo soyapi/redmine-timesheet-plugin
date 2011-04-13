@@ -12,4 +12,8 @@ en:
   text_active_projects: "Active"
   text_all_projects: "All (active and archived)"
   label_customer: "Customer"
+  mail_subject_timesheet_submitted: "%{value} has submitted a new timesheet"
+  mail_subject_timesheet_approved: "%{manager} has approved a new timesheet for %{user}"
+  mail_body_timesheet_submitted: "%{user} has submitted a new timesheet for week beginning %{start_date}.\nPlease approve ASAP!"
+  mail_body_timesheet_approved: "%{manager} has approved a new timesheet for %{user} for week beginning %{start_date}."
 

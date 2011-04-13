@@ -1,0 +1,5 @@
+<p><%= l(:mail_body_timesheet_approved,
+         :manager => (h(@manager) rescue '<Unknown Manager?>'),
+         :user => (h(@user) rescue '<Unknown Staff?>'),
+         :start_date => h(@start_date)) %></p>
+<p><%= link_to 'View the Timesheet', @url %></p>

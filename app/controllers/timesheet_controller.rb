@@ -104,9 +104,14 @@ class TimesheetController < ApplicationController
     @timesheet.users = [User.current.id]
     url = get_user_timesheet_url(@timesheet)
 
-    Mailer.deliver_timesheet_submitted(User.current,
+    Mailer.deliver_timesheet_submitted(User.current.manager,
+                                       User.current,
                                        @timesheet.date_from,
                                        url)
+
+    # TODO: enable logging to a table
+    # @timesheet.save_submission()
+
     flash[:notice] = "Timesheet successfully submitted!"
     redirect_to :controller => 'timesheet', :action => 'index'
   end

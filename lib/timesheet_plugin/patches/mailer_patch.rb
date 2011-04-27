@@ -15,8 +15,8 @@ module TimesheetPlugin
 
       module InstanceMethods
         # Submitting a new timesheet
-        def timesheet_submitted(user, start_date, url)
-          recipients [user.mail]
+        def timesheet_submitted(manager, user, start_date, url)
+          recipients [manager.mail]
           subject l(:mail_subject_timesheet_submitted, user.name)
           body :user => user,
                :url => url,

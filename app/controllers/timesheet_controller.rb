@@ -107,6 +107,7 @@ class TimesheetController < ApplicationController
     Mailer.deliver_timesheet_submitted(User.current.manager,
                                        User.current,
                                        @timesheet.date_from,
+                                       @timesheet.date_to,
                                        url)
 
     # TODO: enable logging to a table
@@ -129,6 +130,7 @@ class TimesheetController < ApplicationController
       Mailer.deliver_timesheet_approved(manager,
                                         user,
                                         @timesheet.date_from,
+                                        @timesheet.date_to,
                                         url)
       flash[:notice] = "Timesheet successfully approved!"
     else

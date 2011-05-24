@@ -14,6 +14,6 @@ en:
   label_customer: "Customer"
   mail_subject_timesheet_submitted: "%{value} has submitted a new timesheet"
   mail_subject_timesheet_approved: "%{manager} has approved a new timesheet for %{user}"
-  mail_body_timesheet_submitted: "%{user} has submitted a new timesheet for week beginning %{start_date}.\nPlease approve ASAP!"
-  mail_body_timesheet_approved: "%{manager} has approved a new timesheet for %{user} for week beginning %{start_date}."
+  mail_body_timesheet_submitted: "%{user} has submitted a new timesheet for period %{start_date} - %{end_date}.\nPlease approve ASAP!"
+  mail_body_timesheet_approved: "%{manager} has approved a new timesheet for %{user} for period %{start_date} - %{end_date}."
 
